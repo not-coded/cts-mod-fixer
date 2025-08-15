@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "modfixer",
+  "version": "${version}",
+
+  "name": "CTS Mod Fixer",
+  "description": "",
+  "authors": [
+    "NotCoded"
+  ],
+  "contact": {
+    "homepage": "https://notcoded.is-a.dev",
+    "sources": "https://github.com/NotCoded/cts-mod-fixer"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/modfixer/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.notcoded.modfixer.ModFixer"
+    ]
+  },
+  "mixins": [
+    "modfixer.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=14.21",
+    "minecraft": ["1.16.3-combat.8.c", "1.16.2-1.16.combat-6"],
+    "fabric": ">0.25.0"
+  }
+}
