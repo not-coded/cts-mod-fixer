@@ -12,6 +12,7 @@ base {
 
 repositories {
     maven { url "https://maven.rizecookey.net/" }
+    maven {url "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -20,6 +21,8 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    //modApi("maven.modrinth:iris:1turazSM")
+    modApi("maven.modrinth:modmenu:aShj7736")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixin_extras_version}")))
 }

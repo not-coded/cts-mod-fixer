@@ -1,11 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.notcoded.modfixer.mixins",
+  "package": "net.notcoded.modfixer.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "modmenu.DescriptionListWidgetMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "net.notcoded.modfixer.mixin.MixinPlugin"
 }
