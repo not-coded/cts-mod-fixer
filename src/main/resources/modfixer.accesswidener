@@ -1,3 +1,4 @@
 accessWidener   v1   named
+accessible method net/minecraft/client/gui/components/AbstractSelectionList getMaxPosition ()I
 accessible field net/minecraft/client/gui/components/AbstractSelectionList y1 I
 accessible field net/minecraft/client/gui/components/AbstractSelectionList y0 I
