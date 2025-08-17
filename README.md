@@ -1,5 +1,7 @@
 # Combat Test 8c Mod Fixer
 
+[Download](https://github.com/not-coded/cts-mod-fixer/releases/download/1.0.0/modfixer-1.0.0.jar)
+
 ## Fixes
 
 - Mod Menu (<https://modrinth.com/mod/modmenu/version/1.16.23>)
