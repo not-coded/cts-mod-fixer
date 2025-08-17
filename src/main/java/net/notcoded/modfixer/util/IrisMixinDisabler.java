@@ -5,16 +5,16 @@ import net.notcoded.modfixer.ModFixer;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Desktop;
-import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.io.*;
 import java.nio.file.*;
 import javax.swing.JOptionPane;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -60,28 +60,21 @@ public class IrisMixinDisabler {
     
     private static void processIrisJar(Path jarPath) throws IOException {
         ModFixer.LOGGER.info("Processing Iris JAR: {}", jarPath);
-        
-        // Create a temporary directory for extraction
+
         Path tempDir = Files.createTempDirectory("iris-mod-");
         Path outputJar = Paths.get(jarPath.toString().replace(".jar", "-modified.jar"));
         
         try {
-            // Extract JAR
             extractJar(jarPath, tempDir);
-            
-            // Process mixin files
+
             boolean modified = false;
             modified |= processMixinFile(tempDir, "mixins.iris.json", MIXINS_TO_REMOVE);
             modified |= processMixinFile(tempDir, "mixins.iris.vertexformat.json", VERTEX_FORMAT_MIXINS_TO_REMOVE);
             
             if (modified) {
-                // Create mixin changes file
                 createMixinChangesFile(tempDir);
-                
-                // Create new JAR
                 createJar(tempDir, outputJar);
-                
-                // Delete original file
+
                 Files.deleteIfExists(jarPath);
                 ModFixer.LOGGER.info("Created modified JAR and removed original: {}", outputJar);
                 showRestartNotification();
@@ -89,7 +82,6 @@ public class IrisMixinDisabler {
                 ModFixer.LOGGER.info("No mixins were removed, skipping JAR modification");
             }
         } finally {
-            // Clean up
             deleteDirectory(tempDir);
         }
     }
@@ -120,13 +112,11 @@ public class IrisMixinDisabler {
     
     private static void createMixinChangesFile(Path baseDir) throws IOException {
         StringBuilder changes = new StringBuilder("Removed mixins:\n");
-        
-        // Add regular mixins with their source file
+
         for (String mixin : MIXINS_TO_REMOVE) {
             changes.append("- ").append(mixin).append(" (mixins.iris.json)\n");
         }
-        
-        // Add vertex format mixins with their source file
+
         for (String mixin : VERTEX_FORMAT_MIXINS_TO_REMOVE) {
             changes.append("- ").append(mixin).append(" (mixins.iris.vertexformat.json)\n");
         }
@@ -158,33 +148,36 @@ public class IrisMixinDisabler {
     }
     
     private static void createJar(Path sourceDir, Path targetJar) throws IOException {
-        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(targetJar.toFile().toPath()))) {
-            Files.walk(sourceDir)
-                .filter(path -> !Files.isDirectory(path))
-                .forEach(path -> {
-                    String zipPath = sourceDir.relativize(path).toString().replace("\\", "/");
-                    try {
-                        zos.putNextEntry(new ZipEntry(zipPath));
-                        Files.copy(path, zos);
-                        zos.closeEntry();
-                    } catch (IOException e) {
-                        ModFixer.LOGGER.error("Error adding file to JAR: {}", zipPath, e);
-                    }
-                });
+        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(targetJar.toFile().toPath()));
+             Stream<Path> fileStream = Files.walk(sourceDir)) {
+
+            fileStream.filter(path -> !Files.isDirectory(path))
+                    .forEach(path -> {
+                        String zipPath = sourceDir.relativize(path).toString().replace("\\", "/");
+                        try {
+                            zos.putNextEntry(new ZipEntry(zipPath));
+                            Files.copy(path, zos);
+                            zos.closeEntry();
+                        } catch (IOException e) {
+                            ModFixer.LOGGER.error("Error adding file to JAR: {}", zipPath, e);
+                        }
+                    });
         }
     }
     
     private static void deleteDirectory(Path directory) throws IOException {
         if (Files.exists(directory)) {
-            Files.walk(directory)
-                .sorted((a, b) -> b.compareTo(a)) // reverse; files before dirs
-                .forEach(path -> {
-                    try {
-                        Files.deleteIfExists(path);
-                    } catch (IOException e) {
-                        ModFixer.LOGGER.error("Error deleting file: {}", path, e);
-                    }
-                });
+            try (Stream<Path> pathStream = Files.walk(directory)) {
+                pathStream
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.deleteIfExists(path);
+                        } catch (IOException e) {
+                            ModFixer.LOGGER.error("Error deleting file: {}", path, e);
+                        }
+                    });
+            }
         }
     }
     
