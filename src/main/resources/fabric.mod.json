@@ -25,7 +25,6 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.21",
-    "minecraft": ["1.16.3-combat.8.c", "1.16.2-1.16.combat-6"],
-    "fabric": ">0.25.0"
+    "minecraft": ["1.16.3-combat.8.c", "1.16.2-1.16.combat-6"]
   }
 }

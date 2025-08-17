@@ -1,8 +1,8 @@
 package net.notcoded.modfixer.mixin;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.notcoded.modfixer.util.IrisMixinDisabler;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.extensibility.IMixinConfig;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
@@ -12,7 +12,7 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String s) {
-
+        IrisMixinDisabler.iris();
     }
 
     @Override
@@ -23,6 +23,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if(mixinClassName.contains("modmenu") && !FabricLoader.getInstance().isModLoaded("modmenu")) return false;
+        if(mixinClassName.contains("iris") && !FabricLoader.getInstance().isModLoaded("iris")) return false;
         return true;
     }
 

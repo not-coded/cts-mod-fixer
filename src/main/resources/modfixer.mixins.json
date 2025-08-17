@@ -4,6 +4,7 @@
   "package": "net.notcoded.modfixer.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "iris.ShaderPackScreenMixin",
     "modmenu.DescriptionListWidgetMixin"
   ],
   "injectors": {
