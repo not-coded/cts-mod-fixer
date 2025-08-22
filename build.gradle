@@ -11,8 +11,10 @@ base {
 
 
 repositories {
+    flatDir { dirs("libraries/") }
     maven { url "https://maven.rizecookey.net/" }
     maven {url "https://api.modrinth.com/maven" }
+    maven { url "https://maven.bawnorton.com/releases" }
 }
 
 dependencies {
@@ -20,15 +22,14 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // iris file stuff
-    implementation 'commons-io:commons-io:2.14.0'
-    implementation 'org.apache.commons:commons-lang3:3.18.0'
-
-    modApi("maven.modrinth:iris:1turazSM")
-    modApi("maven.modrinth:modmenu:aShj7736")
-    //modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixin_extras_version}")))
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")))
+
+    modCompileOnlyApi("maven.modrinth:iris:1turazSM") // Iris 1.4.5
+    modApi("maven.modrinth:modmenu:aShj7736") // Mod Menu 1.16.23
+    modCompileOnlyApi("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}") // Fabric API 0.42.0
+    modApi("maven.modrinth:screenshot-viewer:U6mIvhIm") // Screenshot Viewer 1.1.1
+    modApi("org.dimdev.vanillafix:VanillaFix:2.0.0+beta-29-03-2021") // VanillaFix 2.0.0+beta-29-03-2021
 }
 
 processResources {

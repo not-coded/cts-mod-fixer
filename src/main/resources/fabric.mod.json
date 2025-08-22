@@ -2,21 +2,23 @@
   "schemaVersion": 1,
   "id": "modfixer",
   "version": "${version}",
-
   "name": "CTS Mod Fixer",
-  "description": "",
+  "description": "Fixes mod compatibility issues for Combat Test 8c",
   "authors": [
     "NotCoded"
   ],
   "contact": {
     "homepage": "https://notcoded.is-a.dev",
-    "sources": "https://github.com/NotCoded/cts-mod-fixer"
+    "sources": "https://github.com/not-coded/cts-mod-fixer"
   },
   "license": "LGPL-3.0",
   "icon": "assets/modfixer/icon.png",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
-    "client": [
+    "main": [
+      "net.notcoded.modfixer.ModFixer"
+    ],
+    "mixinsquared":[
       "net.notcoded.modfixer.ModFixer"
     ]
   },

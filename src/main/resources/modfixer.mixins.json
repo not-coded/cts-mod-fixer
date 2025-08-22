@@ -5,7 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "iris.ShaderPackScreenMixin",
-    "modmenu.DescriptionListWidgetMixin"
+    "modmenu.DescriptionListWidgetMixin",
+    "screenshot_viewer.ScreenshotViewerMixin"
+  ],
+  "mixins": [
+    "fabric.MixinServerPlayNetworkHandler"
   ],
   "injectors": {
     "defaultRequire": 1
